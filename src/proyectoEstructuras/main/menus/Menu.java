@@ -19,9 +19,9 @@ public class Menu {
         do {
             System.out.println("\n\tPUERTO PROGRESO LOGIS SYSTEM v1.0 - GESTIÓN PORTUARIA");
             System.out.println("=================================================================");
-            System.out.println("[1] ZONA DE RECEPCIÓN");
-            System.out.println("[2] PATIO DE CONTENEDORES");
-            System.out.println("[3] LOGÍSTICA Y RUTAS");
+            System.out.println("[1] ZONA DE RECEPCIÓN"); //Colas
+            System.out.println("[2] PATIO DE CONTENEDORES"); //Pilas
+            System.out.println("[3] LOGÍSTICA Y RUTAS"); //Lista Simplemente Ligadas
             System.out.println("[4] REPORTE GENERAL");
             System.out.println("[5] SALIR");
 
@@ -57,7 +57,7 @@ public class Menu {
         System.out.println("[!] Programa finalizado.");
     }
 
-    private void subMenuZonaDeRecepcion(){
+    private void subMenuZonaDeRecepcion(){ //Submenu 1 (Pilas)
         int opcion;
         do{
             System.out.println("\n\tZONA DE RECEPCIÓN");
@@ -94,7 +94,7 @@ public class Menu {
     }
 
 
-    private void subMenuPatioDeContenedores(){
+    private void subMenuPatioDeContenedores(){ //Submenú 1
         int opcion;
         do{
             System.out.println("\n\tZONA DE RECEPCIÓN");
@@ -130,7 +130,8 @@ public class Menu {
             }
         }while (opcion != 5);
     }
-    private void inspeccionarContenedorOpciones(){
+
+    private void inspeccionarContenedorOpciones(){ //Submenú 2
         boolean salir = false;
         do{
             System.out.println(">>[1] Agregar producto");
@@ -150,7 +151,7 @@ public class Menu {
         }while (!salir);
     }
 
-    private void subMenuRutas(){
+    private void subMenuRutas(){ //Submenú 3
         int opcion;
         do{
             System.out.println("\n\tLOGÍSTICA Y RUTAS");
@@ -184,9 +185,9 @@ public class Menu {
                     presionaEnter();
             }
         }while (opcion != 5);
-
     }
-    private void subMenuReportePuerto(){
+
+    private void subMenuReportePuerto(){ //Submenú 4
         System.out.println("\n\tREPORTE GENERAL");
         System.out.println("=========================================");
         presionaEnter();
