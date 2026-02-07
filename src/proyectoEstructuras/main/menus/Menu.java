@@ -1,5 +1,5 @@
 package proyectoEstructuras.main.menus;
-
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
@@ -9,10 +9,205 @@ public class Menu {
         scanner = new Scanner(System.in);
         // aqui puden agregar las listas, colas y las variables del menu
     }
-    private void menuPrincipal(){}
-    private void subMenuZonaDeRecepcion(){}
-    private void subMenuPatioDeContenedores(){}
-    private void subMenuRutas(){}
-    private void subMenuReportePuerto(){}
+
+    public void iniciar(){
+        menuPrincipal();
+    }
+
+    private void menuPrincipal(){
+        int opcion;
+        do {
+            System.out.println("\n\tPUERTO PROGRESO LOGIS SYSTEM v1.0 - GESTIÓN PORTUARIA");
+            System.out.println("=================================================================");
+            System.out.println("[1] ZONA DE RECEPCIÓN");
+            System.out.println("[2] PATIO DE CONTENEDORES");
+            System.out.println("[3] LOGÍSTICA Y RUTAS");
+            System.out.println("[4] REPORTE GENERAL");
+            System.out.println("[5] SALIR");
+
+            System.out.println("Seleccione una opción: ");
+            opcion = leerOpcion();
+            switch (opcion){
+                case 1 :
+                    System.out.println("[-] Opcion[1]");
+                    subMenuZonaDeRecepcion();
+                    break;
+                case 2:
+                    System.out.println("[-] Opcion[2]");
+                    subMenuPatioDeContenedores();
+                    break;
+                case 3:
+                    System.out.println("[-] Opcion[3]");
+                    subMenuRutas();
+                    break;
+                case 4:
+                    System.out.println("[-] Opcion[4]");
+
+                    subMenuReportePuerto();
+                    break;
+                case 5:
+                    System.out.println("[!] Saliendo del programa...");
+                    break;
+                default:
+                    System.out.println("[!] Opción no válida");
+                    presionaEnter();
+            }
+
+        }while (opcion != 5);
+        System.out.println("[!] Programa finalizado.");
+    }
+
+    private void subMenuZonaDeRecepcion(){
+        int opcion;
+        do{
+            System.out.println("\n\tZONA DE RECEPCIÓN");
+            System.out.println("=================================================================");
+            System.out.println("[1] Registrar llegada de camión");
+            System.out.println("[2] Dar ingreso a patio");
+            System.out.println("[3] Ver próximo camión a atender");
+            System.out.println("[4] Listar todos los camiones en espera");
+            System.out.println("[5] Volver al menú principal");
+
+            System.out.println("Seleccione una opción: ");
+            opcion = leerOpcion();
+            switch (opcion){
+                case 1 :
+                    System.out.println("[-] Opcion[1]");
+                    break;
+                case 2:
+                    System.out.println("[-] Opcion[2]");
+                    break;
+                case 3:
+                    System.out.println("[-] Opcion[3]");
+                    break;
+                case 4:
+                    System.out.println("[-] Opcion[4]");
+                    break;
+                case 5:
+                    System.out.println("[!] Volviendo al menu...");
+                    break;
+                default:
+                    System.out.println("[!] Opción no válida");
+                    presionaEnter();
+            }
+        }while (opcion != 5);
+    }
+
+
+    private void subMenuPatioDeContenedores(){
+        int opcion;
+        do{
+            System.out.println("\n\tZONA DE RECEPCIÓN");
+            System.out.println("=========================================");
+            System.out.println("[1] Ingresar contenedor desde Recepción");
+            System.out.println("[2] Retirar contenedor para Ruta");
+            System.out.println("[3] Ver tope de las pilas");
+            System.out.println("[4] INSPECCIONAR CONTENEDOR");
+            System.out.println("[5] Volver al menú principal");
+
+            System.out.println("Seleccione una opción: ");
+            opcion = leerOpcion();
+            switch (opcion){
+                case 1 :
+                    System.out.println("[-] Opcion[1]");
+                    break;
+                case 2:
+                    System.out.println("[-] Opcion[2]");
+                    break;
+                case 3:
+                    System.out.println("[-] Opcion[3]");
+                    break;
+                case 4:
+                    System.out.println("[-] Opcion[4]");
+                    inspeccionarContenedorOpciones();
+                    break;
+                case 5:
+                    System.out.println("[!] Volviendo al menu...");
+                    break;
+                default:
+                    System.out.println("[!] Opción no válida");
+                    presionaEnter();
+            }
+        }while (opcion != 5);
+    }
+    private void inspeccionarContenedorOpciones(){
+        boolean salir = false;
+        do{
+            System.out.println(">>[1] Agregar producto");
+            System.out.println(">>[2] Calcular peso total");
+            int opcion = leerOpcion();
+            switch (opcion){
+                case 1:
+                    System.out.println("[-] INSPECCIONAR CONTENEDOR");
+                    break;
+                case 2:
+                    System.out.println("[!] Volviendo al menu...");
+                    break;
+                default:
+                    salir = true;
+            }
+
+        }while (!salir);
+    }
+
+    private void subMenuRutas(){
+        int opcion;
+        do{
+            System.out.println("\n\tLOGÍSTICA Y RUTAS");
+            System.out.println("=========================================");
+            System.out.println("[1] Agregar nueva parada al final");
+            System.out.println("[2] Insertar parada entre destinos");
+            System.out.println("[3] Cancelar parada");
+            System.out.println("[4] SIMULAR RECORRDIDO");
+            System.out.println("[5] Volver al menú principal");
+
+            System.out.println("Seleccione una opción: ");
+            opcion = leerOpcion();
+            switch (opcion){
+                case 1 :
+                    System.out.println("[-] Opcion[1]");
+                    break;
+                case 2:
+                    System.out.println("[-] Opcion[2]");
+                    break;
+                case 3:
+                    System.out.println("[-] Opcion[3]");
+                    break;
+                case 4:
+                    System.out.println("[-] Opcion[4]");
+                    break;
+                case 5:
+                    System.out.println("[!] Volviendo al menu...");
+                    break;
+                default:
+                    System.out.println("[!] Opción no válida");
+                    presionaEnter();
+            }
+        }while (opcion != 5);
+
+    }
+    private void subMenuReportePuerto(){
+        System.out.println("\n\tREPORTE GENERAL");
+        System.out.println("=========================================");
+        presionaEnter();
+    }
+
+    private void presionaEnter(){
+        System.out.println("\n[+] Presione [enter] para continuar... ");
+        scanner.nextLine(); //buffer
+        scanner.nextLine();
+    }
+
+    private int leerOpcion(){
+        int opcion;
+        try {
+            opcion = scanner.nextInt();
+            return opcion;
+        } catch (InputMismatchException e) {
+            opcion = -1;
+        }
+        return opcion;
+    }
+
 
 }
