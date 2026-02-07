@@ -118,7 +118,7 @@ public class Menu {
                     System.out.println("[-] Opcion[3]");
                     break;
                 case 4:
-                    System.out.println("[-] Opcion[4]");
+                    System.out.println("[-] INSPECCIONAR CONTENEDOR");
                     inspeccionarContenedorOpciones();
                     break;
                 case 5:
@@ -138,7 +138,7 @@ public class Menu {
             int opcion = leerOpcion();
             switch (opcion){
                 case 1:
-                    System.out.println("[-] INSPECCIONAR CONTENEDOR");
+                    System.out.println("[-] Opcion 1");
                     break;
                 case 2:
                     System.out.println("[!] Volviendo al menu...");
