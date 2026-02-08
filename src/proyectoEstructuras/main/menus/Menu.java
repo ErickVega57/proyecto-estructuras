@@ -1,4 +1,6 @@
 package proyectoEstructuras.main.menus;
+import proyectoEstructuras.manifiesto.Rutas;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -153,6 +155,8 @@ public class Menu {
 
     private void subMenuRutas(){ //Submenú 3
         int opcion;
+        Rutas ruta = new Rutas();
+
         do{
             System.out.println("\n\tLOGÍSTICA Y RUTAS");
             System.out.println("=========================================");
@@ -166,10 +170,12 @@ public class Menu {
             opcion = leerOpcion();
             switch (opcion){
                 case 1 :
-                    System.out.println("[-] Opcion[1]");
+                    System.out.println("[1] Agregar nueva parada al final");
+                    ruta.agregarParadaAlFinal();
                     break;
                 case 2:
-                    System.out.println("[-] Opcion[2]");
+                    System.out.println("[2] Insertar parada entre destinos");
+                    ruta.agregarParadaEntreRutas();
                     break;
                 case 3:
                     System.out.println("[-] Opcion[3]");
