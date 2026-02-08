@@ -17,6 +17,7 @@ public class ManejoPatioContenedores {
         System.out.println("[1] Pila A");
         System.out.println("[2] Pila B");
         System.out.println("[3] Pila C");
+        System.out.println("Seleccione opcion: ");
         switch (leerOpcion()){
             case 1 :
                 System.out.println("[PILA A]");
@@ -35,23 +36,61 @@ public class ManejoPatioContenedores {
         }
     }
     public void verTopeDeLasPilas(){
-        Contenedor topeA = (Contenedor)patio.verTopeA();
-        Contenedor topeB = (Contenedor)patio.verTopeB();
-        Contenedor topeC = (Contenedor)patio.verTopeC();
+        Contenedor topeA = null;
+        Contenedor topeB = null;
+        Contenedor topeC = null;
 
+        if (!patio.vacioA())
+            topeA = (Contenedor)patio.verTopeA();
+        if(!patio.vacioB())
+            topeB = (Contenedor)patio.verTopeB();
+        if(!patio.vacioC())
+            topeC = (Contenedor)patio.verTopeC();
 
         System.out.println("Tope de A: " + topeA);
         System.out.println("Tope de B: " + topeB);
         System.out.println("Tope de C: " + topeC);
-
     }
 
-    public void agregarProducto(Contenedor contenedor, Producto producto){
+    public void agregarProducto(String idContenedor, Producto producto) {
+        Contenedor contenedor = buscarContenedorEnA(idContenedor);
+
+        if (contenedor == null) {
+            contenedor = buscarContenedorEnB(idContenedor);
+        }
+
+        if (contenedor == null) {
+            contenedor = buscarContenedorEnC(idContenedor);
+        }
+
+        if (contenedor == null) {
+            System.out.println("[!] No se ha encontrado el contenedor");
+            return;
+        }
+
+        System.out.println("[+] Contenedor encontrado, agregando producto");
         contenedor.agregarProducto(producto);
     }
-    public int CalcularPesoTotal(Contenedor contenedor){
+
+    public int calcularPeso(String idContenedor) {
+        Contenedor contenedor = buscarContenedorEnA(idContenedor);
+
+        if (contenedor == null) {
+            contenedor = buscarContenedorEnB(idContenedor);
+        }
+
+        if (contenedor == null) {
+            contenedor = buscarContenedorEnC(idContenedor);
+        }
+
+        if (contenedor == null) {
+            System.out.println("[!] No se ha encontrado el contenedor");
+            return 0;
+        }
+
         return contenedor.peso();
     }
+
 
     private int leerOpcion(){
         Scanner scanner = new Scanner(System.in);
@@ -65,114 +104,101 @@ public class ManejoPatioContenedores {
         return opcion;
     }
 
-    public Contenedor buscarContenedorEnA (String id){
-        if(patio.vacioA()){  // si la pila esta vacia no hay que buscar
+    public Contenedor buscarContenedorEnA(String id) {
+        if (patio.vacioA()) {
             return null;
         }
-        Contenedor encontrado = null;
-        Contenedor tope = patio.verTopeA();
-        while (!patio.vacioA() && !Objects.equals(tope.getId(), id)){  // pila no vacia y que el id del contenedor tope sea distinto
+        while (!patio.vacioA()) {
+            Contenedor tope = patio.verTopeA();
+
+            if (Objects.equals(tope.getId(), id)) {
+                return tope; // encontrado
+            }
             Contenedor temp = patio.retirarDePilaA();
-            if (!patio.llenoB()){
-                patio.agregarAPilaB(temp);  // si hay espacio en B agrego B
-            }else{
-                if (!patio.llenoC()){  // si no hay en B pero si en C agrego C
-                    patio.agregarAPilaC(temp);
-                }else{
-                    patio.agregarAPilaA(temp);  // no hay espacio ni en B ni en C lo regreso a A
-                    System.out.println("[!] No hay espacio para maniobrar");
-                    return null;
-                }
-            }
-            tope = patio.verTopeA();
-        }
-        if(patio.vacioA()){
-            System.out.println("[!] Contenedor no encontrado en A");
-            return null;
-        }
-        if(Objects.equals(tope.getId(),id)){
-            encontrado = patio.retirarDePilaA();
-        }
-        return encontrado;
-    }
-
-    public Contenedor buscarContenedorEnB(String id){
-        if(patio.vacioB()){
-            return null;
-        }
-        Contenedor encontrado = null;
-        Contenedor tope = patio.verTopeB();
-        while (!patio.vacioB() && !Objects.equals(tope.getId(), id)){
-            Contenedor temp = patio.retirarDePilaB();
-            if (!patio.llenoA()){
-                patio.agregarAPilaA(temp);
-            }else{
-                if (!patio.llenoC()){
-                    patio.agregarAPilaC(temp);
-                }else{
-                    patio.agregarAPilaB(temp);
-                    System.out.println("[!] No hay espacio para maniobrar");
-                    return null;
-                }
-            }
-            tope = patio.verTopeB();
-        }
-        if(patio.vacioB()){
-            System.out.println("[!] Contenedor no encontrado en B");
-            return null;
-        }
-        if(Objects.equals(tope.getId(),id)){
-            encontrado = patio.retirarDePilaB();
-        }
-        return encontrado;
-    }
-
-
-    public Contenedor buscarContenedorEnC(String id){
-        if(patio.vacioC()){
-            return null;
-        }
-        Contenedor encontrado = null;
-        Contenedor tope = patio.verTopeC();
-        while (!patio.vacioC() && !Objects.equals(tope.getId(), id)){
-            Contenedor temp = patio.retirarDePilaC();
-            if (!patio.llenoB()){
+            if (!patio.llenoB()) {
                 patio.agregarAPilaB(temp);
-            }else{
-                if (!patio.llenoA()){
-                    patio.agregarAPilaA(temp);
-                }else{
-                    patio.agregarAPilaC(temp);
-                    System.out.println("[!] No hay espacio para maniobrar");
-                    return null;
-                }
             }
-            tope = patio.verTopeC();
+            else if (!patio.llenoC()) {
+                patio.agregarAPilaC(temp);
+            }
+            else {
+                // no hay espacio para maniobrar
+                patio.agregarAPilaA(temp); // lo devuelves
+                return null;
+            }
         }
-        if(patio.vacioC()){
-            System.out.println("[!] Contenedor no encontrado en C");
-            return null;
+        return null; // no encontrado
+    }
+    public Contenedor buscarContenedorEnB(String id) {
+        if (patio.vacioB()) {
+            return null;    // vacio nada que buscar
         }
-        if(Objects.equals(tope.getId(),id)){
-            encontrado = patio.retirarDePilaC();
+        while (!patio.vacioB()) {
+            Contenedor tope = patio.verTopeB();
+
+            if (Objects.equals(tope.getId(), id)) {
+                return tope; // encontrado
+            }
+            Contenedor temp = patio.retirarDePilaB();  // no encontre desapilo
+            if (!patio.llenoC()) {
+                patio.agregarAPilaC(temp);    // si C no esta lleno apilo en C
+            }
+            else if (!patio.llenoA()) {      // si C esta lleno y A no apilo en A
+                patio.agregarAPilaA(temp);
+            }
+            else {                              // C y A llenos no hay espacio para maniobrar
+                patio.agregarAPilaB(temp);      // lo devuelves a la pila B
+                return null;
+            }
         }
-        return encontrado;
+        return null; // no encontrado
+    }
+    public Contenedor buscarContenedorEnC(String id) {
+        if (patio.vacioC()) {
+            return null;   //vacio C regreso
+        }
+        while (!patio.vacioC()) {     // mientras C no este vacio
+            Contenedor tope = patio.verTopeC();
+
+            if (Objects.equals(tope.getId(), id)) {
+                return tope; // encontrado
+            }
+            Contenedor temp = patio.retirarDePilaC(); //desapilo C
+            if (!patio.llenoA()) {
+                patio.agregarAPilaA(temp);   // meto en A si hay espacio
+            }
+            else if (!patio.llenoB()) {
+                patio.agregarAPilaB(temp);  // meto en B si no hay en A
+            }
+            else {                          // no hay espacio para maniobrar
+                patio.agregarAPilaA(temp); // lo devuelves a C
+                return null;
+            }
+        }
+        return null; // no encontrado
     }
 
     public static void main(String[] args) {
 
         ManejoPatioContenedores sistema = new ManejoPatioContenedores();
 
+        //productos de prueba
+        Producto p1 = new Producto(11,"leche", 1);
+        Producto p2 = new Producto(12,"huevos",1);
+        Producto p3 = new Producto(13,"tablet", 1);
+        Producto p4 = new Producto(14,"television",10);
+        Producto p5 = new Producto(15,"galletas",1);
+
         // Contenedores de prueba
         Contenedor a1 = new Contenedor("A1");
         Contenedor a2 = new Contenedor("A2");
         Contenedor a3 = new Contenedor("A3");
         Contenedor a4 = new Contenedor("A4");
-
+        Contenedor a5 = new Contenedor("A5");
         Contenedor b1 = new Contenedor("B1");
         Contenedor b2 = new Contenedor("B2");
-
         Contenedor c1 = new Contenedor("C1");
+        Contenedor c2 = new Contenedor("C2");
 
         sistema.patio.agregarAPilaA(a1);
         sistema.patio.agregarAPilaA(a2);
@@ -181,26 +207,26 @@ public class ManejoPatioContenedores {
         sistema.patio.agregarAPilaB(b1);
         sistema.patio.agregarAPilaB(b2);
         sistema.patio.agregarAPilaC(c1);
+        sistema.patio.agregarAPilaA(a5);
+        sistema.patio.agregarAPilaC(c2);
 
+        sistema.verTopeDeLasPilas();
+        Contenedor c = sistema.patio.retirarDePilaC();
+        System.out.println(c);
 
-        System.out.println("\n🔎 Buscando A2 en pila A");
-        Contenedor encontrado = sistema.buscarContenedorEnA("A2");
-        System.out.println("Resultado: " + (encontrado != null ? encontrado.getId() : "null"));
+        sistema.verTopeDeLasPilas();
 
-        System.out.println("\n=== DESPUÉS DE BUSCAR EN A ===");
+        sistema.agregarProducto("C1", p1);
+        sistema.verTopeDeLasPilas();
+        sistema.agregarProducto("C8", p4);
+        sistema.verTopeDeLasPilas();
+        sistema.agregarProducto("C1", p5);
+        sistema.verTopeDeLasPilas();
+        System.out.println(sistema.calcularPeso("h1"));
+        System.out.println(sistema.calcularPeso("A1"));
+        sistema.ingresarContenedor(c1);
+        sistema.verTopeDeLasPilas();
 
-        System.out.println("\n🔎 Buscando B1 en pila B");
-        encontrado = sistema.buscarContenedorEnB("B1");
-        System.out.println("Resultado: " + (encontrado != null ? encontrado.getId() : "null"));
-
-        System.out.println("\n=== DESPUÉS DE BUSCAR EN B ===");
-
-
-        System.out.println("\n🔎 Buscando C1 en pila C");
-        encontrado = sistema.buscarContenedorEnC("C1");
-        System.out.println("Resultado: " + (encontrado != null ? encontrado.getId() : "null"));
-
-        System.out.println("\n=== ESTADO FINAL ===");
     }
 
 

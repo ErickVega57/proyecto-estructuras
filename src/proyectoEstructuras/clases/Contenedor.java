@@ -62,6 +62,10 @@ public class Contenedor {
         productos.imprimir();
     }
 
+    public String toString(){
+        return String.format("Contenedor: "  + id );
+    }
+
     public String getId() {
         return id;
     }
