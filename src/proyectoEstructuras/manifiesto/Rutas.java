@@ -4,6 +4,7 @@ import listas.ListaDoble;
 import listas.Nodo;
 import listas.NodoDoble;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Rutas extends ListaDoble {
@@ -18,27 +19,6 @@ public class Rutas extends ListaDoble {
         System.out.println("Ingrese el nombre de la nueva parada: ");
         setNombreRuta(scanner.nextLine());
         insertaFinal(nombreRuta); //se utiliza la función ya creada y se le pasa el nombre del dato.
-    }
-
-    public boolean paradaExiste(String dato){
-         NodoDoble nodoActual = inicio;
-         //recorrer arreglo
-        //si la lista está vacía
-        if(nodoActual == null){
-            System.out.println("[!] La lista está vacía");
-            return false;
-        }
-        while(nodoActual!= null){
-            //comparamos
-            if(dato.equals(nodoActual.getDato())){
-                System.out.println("[!] La parada sí existe");
-                return true;
-            }
-            //cambiamos de nodo
-            nodoActual = nodoActual.getSiguiente();
-        }
-        System.out.println("[!] La parada no existe");
-        return false;
     }
 
     public void agregarParadaEntreRutas(){
@@ -108,7 +88,102 @@ public class Rutas extends ListaDoble {
         }
     }
 
+    public void eliminarParada(){
+        int opcion;
+        do{
+            System.out.println("\n\t[3] Eliminar Parada");
+            System.out.println("=================================================================");
+            System.out.println("[1] Eliminar primera parada");
+            System.out.println("[2] Eliminar última parada");
+            System.out.println("[3] Otra");
+            System.out.println("[4] Volver");
+            System.out.println("Seleccione una opción: ");
+            opcion = leerOpcion();
+            switch (opcion){
+                case 1:
+                    System.out.println("[1] Eliminar primera parada");
+                    System.out.println("[!] Eliminando primera parada...");
+                    eliminaInicio();
+                    imprimir();
+                    break;
+                case 2:
+                    System.out.println("[1] Eliminar última parada");
+                    System.out.println("[!] Eliminando última parada...");
+                    eliminaFinal();
+                    imprimir();
+                    break;
+                case 3:
+                    System.out.println("[3] Otra");
+                    System.out.println("[!] Introduzca el nombre de la parada que desea eliminar:");
+                    System.out.println("[!] Presione Enter...");
+                    scanner.nextLine();
+                    String nombreParadaAEliminar = scanner.nextLine();
 
+                    eliminaOtra(nombreParadaAEliminar);
+                    imprimir();
+                    break;
+            }
+        }while(opcion != 4);
+
+    }
+
+    public boolean paradaExiste(String dato){
+         NodoDoble nodoActual = inicio;
+         //recorrer arreglo
+        //si la lista está vacía
+        if(nodoActual == null){
+            System.out.println("[!] La lista está vacía");
+            return false;
+        }
+        while(nodoActual!= null){
+            //comparamos
+            if(dato.equals(nodoActual.getDato())){
+                System.out.println("[!] La parada sí existe");
+                return true;
+            }
+            //cambiamos de nodo
+            nodoActual = nodoActual.getSiguiente();
+        }
+        System.out.println("[!] La parada no existe");
+        return false;
+    }
+
+    public void eliminaOtra(String datoAEliminar){
+
+        if(inicio == null){
+            System.out.println("[!] Lista vacía...");
+            return;
+        }
+         NodoDoble paradaActual = inicio; //Auxiliar
+         //recorrer nodo
+        if(paradaExiste(datoAEliminar)){
+
+            //Recorremos lista
+            while(!datoAEliminar.equals(paradaActual.getDato())){
+                paradaActual = paradaActual.getSiguiente();
+            } //parada Actual es el nodo que quiero eliminar
+
+            //actualizamos
+            paradaActual.getAnterior().setSiguiente(paradaActual.getSiguiente());
+            paradaActual.getSiguiente().setAnterior(paradaActual.getAnterior());
+
+        }else{
+            System.out.println("[!] El dato no existe...");
+        }
+    }
+
+
+
+    private int leerOpcion(){
+        int opcion;
+        try {
+            opcion = scanner.nextInt();
+            return opcion;
+        } catch (InputMismatchException e) {
+            opcion = -1;
+        }
+        return opcion;
+    }
 
 
     public String getNombreRuta() {
@@ -129,6 +204,7 @@ public class Rutas extends ListaDoble {
         ruta.agregarParadaAlFinal();
 
         ruta.agregarParadaEntreRutas();
+        ruta.eliminarParada();
         ruta.imprimir();
     }
 
