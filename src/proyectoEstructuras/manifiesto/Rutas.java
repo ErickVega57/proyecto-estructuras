@@ -172,6 +172,55 @@ public class Rutas extends ListaDoble {
         }
     }
 
+    public void recorrerParadas() {
+
+        if (inicio == null) {
+            System.out.println("[!] No hay paradas en la ruta.");
+            return;
+        }
+
+        NodoDoble actual = inicio;
+        int opcion;
+
+        do {
+            System.out.println("\n=== Navegación de Paradas ===");
+            System.out.println("Parada actual: " + actual.getDato());
+            System.out.println("[1] Ir a la siguiente parada");
+            System.out.println("[2] Ir a la parada anterior");
+            System.out.println("[3] Salir");
+            System.out.print("Seleccione opción: ");
+
+            opcion = leerOpcion();
+
+            switch (opcion) {
+
+                case 1:
+                    if (actual.getSiguiente() != null) {
+                        actual = actual.getSiguiente();
+                    } else {
+                        System.out.println("[!] Ya estás en la última parada.");
+                    }
+                    break;
+
+                case 2:
+                    if (actual.getAnterior() != null) {
+                        actual = actual.getAnterior();
+                    } else {
+                        System.out.println("[!] Ya estás en la primera parada.");
+                    }
+                    break;
+
+                case 3:
+                    System.out.println("[!] Saliendo de la navegación...");
+                    break;
+
+                default:
+                    System.out.println("[!] Opción inválida.");
+            }
+
+        } while (opcion != 3);
+    }
+
 
 
     private int leerOpcion(){
@@ -205,6 +254,7 @@ public class Rutas extends ListaDoble {
 
         ruta.agregarParadaEntreRutas();
         ruta.eliminarParada();
+        ruta.recorrerParadas();
         ruta.imprimir();
     }
 

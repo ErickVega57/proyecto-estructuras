@@ -178,10 +178,12 @@ public class Menu {
                     ruta.agregarParadaEntreRutas();
                     break;
                 case 3:
-                    System.out.println("[-] Opcion[3]");
+                    System.out.println("[3] Cancelar parada");
+                    ruta.eliminarParada();
                     break;
                 case 4:
-                    System.out.println("[-] Opcion[4]");
+                    System.out.println("[4] Simular recorrido");
+                    ruta.recorrerParadas();
                     break;
                 case 5:
                     System.out.println("[!] Volviendo al menu...");
