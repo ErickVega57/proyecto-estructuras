@@ -1,14 +1,18 @@
 package proyectoEstructuras.main.menus;
 
+import proyectoEstructuras.clases.PatioDeContenedores;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
     private Scanner scanner;
+    private PatioDeContenedores patio;
 
     public Menu(){
         scanner = new Scanner(System.in);
         // aqui puden agregar las listas, colas y las variables del menu
+        patio = new PatioDeContenedores();
     }
 
     public void iniciar(){
@@ -110,13 +114,19 @@ public class Menu {
             opcion = leerOpcion();
             switch (opcion){
                 case 1 :
-                    System.out.println("[-] Opcion[1]");
+                    System.out.println(">>[-] Ingresar contenedor desde Recepción");
+                    patio.ingresarContenedor();
+                    presionaEnter();
                     break;
                 case 2:
-                    System.out.println("[-] Opcion[2]");
+                    System.out.println(">>[-] Retirar contenedor para Ruta");
+                    patio.retirarContenedor();
+                    presionaEnter();
                     break;
                 case 3:
-                    System.out.println("[-] Opcion[3]");
+                    System.out.println(">>[-] Ver tope de las pilas");
+                    patio.verTopeDeLasPilas();
+                    presionaEnter();
                     break;
                 case 4:
                     System.out.println("[-] INSPECCIONAR CONTENEDOR");
@@ -139,10 +149,15 @@ public class Menu {
             int opcion = leerOpcion();
             switch (opcion){
                 case 1:
-                    System.out.println("[-] Opcion 1");
+                    System.out.println("[-] Agregar producto");
+                    patio.agregarProducto();
+                    presionaEnter();
                     break;
                 case 2:
-                    System.out.println("[!] Volviendo al menu...");
+                    System.out.println("[-] Calcular peso total");
+                    int peso = patio.calcularPeso();
+                    System.out.println("El peso del contenedor es: " + peso);
+                    presionaEnter();
                     break;
                 default:
                     salir = true;

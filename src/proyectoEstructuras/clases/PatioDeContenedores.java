@@ -149,7 +149,7 @@ public class PatioDeContenedores {
         return contenedor.peso();
     }
 
-    public void RetirarContenedor(){
+    public void retirarContenedor(){
 
         System.out.println("[+] Seleccione la pila de la que desea retirar el contenedor");
         System.out.println("[1] Pila A");
