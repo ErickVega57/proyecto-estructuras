@@ -1,7 +1,6 @@
-package proyectoEstructuras.manifiesto;
+package proyectoEstructuras.rutas;
 
 import listas.ListaDoble;
-import listas.Nodo;
 import listas.NodoDoble;
 
 import java.util.InputMismatchException;

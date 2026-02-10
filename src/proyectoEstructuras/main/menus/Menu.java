@@ -1,15 +1,16 @@
 package proyectoEstructuras.main.menus;
-import proyectoEstructuras.manifiesto.Rutas;
+import proyectoEstructuras.rutas.Rutas;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
     private Scanner scanner;
-
+    private Rutas ruta;
     public Menu(){
         scanner = new Scanner(System.in);
         // aqui puden agregar las listas, colas y las variables del menu
+        Rutas ruta = new Rutas();
     }
 
     public void iniciar(){
@@ -155,7 +156,6 @@ public class Menu {
 
     private void subMenuRutas(){ //Submenú 3
         int opcion;
-        Rutas ruta = new Rutas();
 
         do{
             System.out.println("\n\tLOGÍSTICA Y RUTAS");
