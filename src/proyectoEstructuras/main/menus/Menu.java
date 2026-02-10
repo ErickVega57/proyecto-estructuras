@@ -39,7 +39,7 @@ public class Menu {
                     subMenuPatioDeContenedores();
                     break;
                 case 3:
-                    System.out.println("[-] Opcion[3]");
+                    System.out.println("[3] LOGÍSTICA Y RUTAS");
                     subMenuRutas();
                     break;
                 case 4:
@@ -183,7 +183,7 @@ public class Menu {
                     break;
                 case 4:
                     System.out.println("[4] Simular recorrido");
-                    ruta.simularRecorrido();
+                    ruta.recorrerParadas();
                     break;
                 case 5:
                     System.out.println("[!] Volviendo al menu...");

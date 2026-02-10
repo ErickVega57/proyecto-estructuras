@@ -20,8 +20,8 @@ public class Rutas{
     }
 
      public void agregarParadaAlFinal(){
-        String nombreParada = leerDato();
-        recorrido.insertaFinal(nombreParada); //se utiliza la función ya creada y se le pasa el nombre del dato.
+        recorrido.insertaFinal(setNombreParada()); //se utiliza la función ya creada y se le pasa el nombre del dato.
+         System.out.println("[!] La parada se agregó correctamente...");
     }
 
     public void agregarParadaEntreRutas(){
@@ -31,36 +31,27 @@ public class Rutas{
          //Tres casos 1. Lista vacía 2. Solo un elemento 3. Encontrar Nodo.
         //caso 1.
         if(recorrido.vacio()){
+            saltoDeLinea();
             System.out.println("[!] La lista está vacía: ");
             nuevaParada.setDato(setNombreParada());
             recorrido.insertaFinal(nuevaParada.getDato());
             return;
         } else {
-            System.out.println("[!] La tiene uno o más elementos: ");
+            saltoDeLinea();
+            System.out.println("[!] El recorrido tiene una o más paradas...");
             nuevaParada.setDato(setNombreParada());
             System.out.println("Parada de referencia: ");
 
             NodoDoble referencia = new NodoDoble(leerDato()); //se lee el dato SOLO UNA VEZ
 
-
-        //caso 2 hay más elementos
-            /*if (recorrido.getInicio() == recorrido.getUltimo()) { //Caso 2. solo un elemento en la lista
-                menuParadas(nuevaParada, referencia); //Decidir si se agrega antes o después de esa parada
-                System.out.println("ESTOY EN CASO SOLO UN ELEMENTO");
-                return;
-            }*/
-
             if(buscar(referencia.getDato().toString()) != null){ //si el elemento está en la lista
                 menuParadas(nuevaParada, referencia);
             }else{
+                saltoDeLinea();
                 System.out.println("[!] La parada no existe");
             }
 
         }
-    }
-
-    public void verRecorrido(){
-         recorrido.imprimir();
     }
 
     public void menuParadas(NodoDoble nuevaParada, NodoDoble paradaBuscada){
@@ -79,6 +70,7 @@ public class Rutas{
                 agregarDespues(referencia, nuevaParada);
                 break;
             default:
+                saltoDeLinea();
                 System.out.println("[!] Opción inválida");
         }
     }
@@ -114,8 +106,6 @@ public class Rutas{
         }
     }
 
-
-
     public NodoDoble buscar(String paradaBuscada){
         //Buscará el dato dentro del recorrido y devolverá el nodo que busco, con sus apuntadores
         //Nodo auxiliar
@@ -130,7 +120,6 @@ public class Rutas{
         return null;
     }
 
-
     public void menuEliminarParada(){
 
         System.out.println("[1] Eliminar primera parada");
@@ -142,20 +131,29 @@ public class Rutas{
         switch(op){
 
             case 1:
-                eliminarParadaPorNombre(
-                        recorrido.getInicio().getDato().toString()
-                );
+                if(recorrido.getInicio() == null){
+                    saltoDeLinea();
+                    System.out.println("[!] No hay paradas en la ruta.");
+                }else
+                    eliminarParadaPorNombre(recorrido.getInicio().getDato().toString());
                 break;
 
             case 2:
-                eliminarParadaPorNombre(
-                        recorrido.getUltimo().getDato().toString()
-                );
+                if(recorrido.getUltimo() == null){
+                    saltoDeLinea();
+                    System.out.println("[!] No hay paradas en la ruta.");
+                }else
+                    eliminarParadaPorNombre(recorrido.getUltimo().getDato().toString());
                 break;
 
             case 3:
-                System.out.println("Ingrese parada a eliminar:");
-                eliminarParadaPorNombre(leerDato());
+                if(recorrido.vacio()){
+                    saltoDeLinea();
+                    System.out.println("[!] No hay paradas en la ruta.");
+                }else {
+                    System.out.println("Ingrese parada a eliminar:");
+                    eliminarParadaPorNombre(leerDato());
+                }
                 break;
 
             default:
@@ -166,6 +164,7 @@ public class Rutas{
     public void eliminarParadaPorNombre(String nombre){
 
         if(recorrido.vacio()){
+            saltoDeLinea();
             System.out.println("[!] No hay paradas en la ruta.");
             return;
         }
@@ -173,6 +172,7 @@ public class Rutas{
         NodoDoble nodoEliminar = buscar(nombre);
 
         if(nodoEliminar == null){
+            saltoDeLinea();
             System.out.println("[!] La parada no existe.");
             return;
         }
@@ -196,19 +196,64 @@ public class Rutas{
             nodoEliminar.getAnterior().setSiguiente(nodoEliminar.getSiguiente());
             nodoEliminar.getSiguiente().setAnterior(nodoEliminar.getAnterior());
         }
-
+        saltoDeLinea();
         System.out.println("[!] Parada eliminada correctamente.");
     }
 
-    //***
-    public void simularRecorrido(){
-        NodoDoble aux = recorrido.getInicio();
+    public void recorrerParadas() {
 
-        while(aux != null){
-
+        if (recorrido.getInicio() == null) {
+            saltoDeLinea();
+            System.out.println("[!] No hay paradas en la ruta.");
+            return;
         }
-    }
 
+        NodoDoble actual = recorrido.getInicio();
+        int opcion;
+
+        do {
+            saltoDeLinea();
+            System.out.println("\n=== Navegación de Paradas ===");
+            System.out.println("Parada actual: " + actual.getDato());
+            System.out.println("[1] Ir a la siguiente parada");
+            System.out.println("[2] Ir a la parada anterior");
+            System.out.println("[3] Salir");
+            System.out.print("Seleccione opción: ");
+
+            opcion = leerOpcion();
+
+            switch (opcion) {
+
+                case 1:
+                    if (actual.getSiguiente() != null) {
+                        actual = actual.getSiguiente();
+                    } else {
+                        saltoDeLinea();
+                        System.out.println("[!] Ya estás en la última parada.");
+                    }
+                    break;
+
+                case 2:
+                    if (actual.getAnterior() != null) {
+                        actual = actual.getAnterior();
+                    } else {
+                        saltoDeLinea();
+                        System.out.println("[!] Ya estás en la primera parada.");
+                    }
+                    break;
+
+                case 3:
+                    saltoDeLinea();
+                    System.out.println("[!] Saliendo simulación de recorrido...");
+                    break;
+
+                default:
+                    saltoDeLinea();
+                    System.out.println("[!] Opción inválida.");
+            }
+
+        } while (opcion != 3);
+    }
 
     private int leerOpcion(){
         int opcion;
@@ -238,6 +283,12 @@ public class Rutas{
         return dato;
     }
 
+    public void saltoDeLinea(){
+        for( int i = 0; i<4; i++){
+            System.out.println();
+        }
+    }
+
 
     //OVERRIDE FUNCTIONS
     public static void main(String[] args) {
@@ -246,6 +297,8 @@ public class Rutas{
         ruta.agregarParadaAlFinal();
         ruta.agregarParadaEntreRutas();
         ruta.recorrido.imprimir();
+
+        ruta.recorrerParadas();
 
     }
 
