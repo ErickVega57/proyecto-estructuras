@@ -179,11 +179,11 @@ public class Menu {
                     break;
                 case 3:
                     System.out.println("[3] Cancelar parada");
-
+                    ruta.menuEliminarParada();
                     break;
                 case 4:
                     System.out.println("[4] Simular recorrido");
-
+                    ruta.simularRecorrido();
                     break;
                 case 5:
                     System.out.println("[!] Volviendo al menu...");
