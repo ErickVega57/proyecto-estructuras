@@ -1,4 +1,5 @@
 package proyectoEstructuras.main.menus;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
