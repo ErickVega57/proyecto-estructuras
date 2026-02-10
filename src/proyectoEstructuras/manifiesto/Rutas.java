@@ -1,261 +1,268 @@
 package proyectoEstructuras.manifiesto;
 
 import listas.ListaDoble;
-import listas.Nodo;
 import listas.NodoDoble;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Rutas extends ListaDoble {
-    Scanner scanner = new Scanner(System.in);
-    String nombreRuta; //equivalente a Dato de ListaDoble
+public class Rutas{
+
+    private Scanner scanner = new Scanner(System.in);
+    private ListaDoble recorrido = new ListaDoble();
 
     //Nodo inicio, final, siguiente, anterior
     //Ruta es un tipo de ListaDoble
-
+    public String setNombreParada(){
+        System.out.println("Ingrese el nombre de la nueva parada: ");
+        return leerDato();
+    }
 
      public void agregarParadaAlFinal(){
-        System.out.println("Ingrese el nombre de la nueva parada: ");
-        setNombreRuta(scanner.nextLine());
-        insertaFinal(nombreRuta); //se utiliza la función ya creada y se le pasa el nombre del dato.
+        String nombreParada = leerDato();
+        recorrido.insertaFinal(nombreParada); //se utiliza la función ya creada y se le pasa el nombre del dato.
     }
 
     public void agregarParadaEntreRutas(){
+         //recibir nombre de la nueva Parada
+        NodoDoble nuevaParada = new NodoDoble(); //Se le asigna un nuevo dato a la nueva parada
 
-        System.out.println("[!] Inserte nombre de la nueva parada: ");
-        NodoDoble paradaNueva = new NodoDoble(scanner.nextLine());
-
-        if(inicio == null){ //lista vacía
-            System.out.println("[!] La lista está vacía. Se añadirá parada al inicio de la ruta.");
-            inicio = ultimo = paradaNueva;
+         //Tres casos 1. Lista vacía 2. Solo un elemento 3. Encontrar Nodo.
+        //caso 1.
+        if(recorrido.vacio()){
+            System.out.println("[!] La lista está vacía: ");
+            nuevaParada.setDato(setNombreParada());
+            recorrido.insertaFinal(nuevaParada.getDato());
             return;
-        }
+        } else {
+            System.out.println("[!] La tiene uno o más elementos: ");
+            nuevaParada.setDato(setNombreParada());
+            System.out.println("Parada de referencia: ");
 
-        System.out.println("[?] ¿Después de qué parada quiere añadir una nueva?");
-        String datoParadaAnterior = scanner.nextLine();
+            NodoDoble referencia = new NodoDoble(leerDato()); //se lee el dato SOLO UNA VEZ
 
-        if(paradaExiste(datoParadaAnterior)){
+            System.out.println("DATO LEÍDO: " + referencia.getDato()); //LEE CORRECTAMENTE EL DATO
 
-            if(inicio == ultimo){
+        //caso 2 hay más elementos
+            System.out.println(recorrido.getInicio());
+            System.out.println("LISTA ACTUAL:");
+            verRecorrido();
+            /*if (recorrido.getInicio() == recorrido.getUltimo()) { //Caso 2. solo un elemento en la lista
+                menuParadas(nuevaParada, referencia); //Decidir si se agrega antes o después de esa parada
+                System.out.println("ESTOY EN CASO SOLO UN ELEMENTO");
+                return;
+            }*/
 
-                System.out.println("[!] Solo hay una parada programada");
-                System.out.println("[1] Insertar después");
-                System.out.println("[2] Insertar antes");
-
-                int op = scanner.nextInt();
-                scanner.nextLine();
-
-                switch (op){
-                    case 1:
-                        insertaFinal(paradaNueva.getDato());
-                        return;
-
-                    case 2:
-                        insertaInicio(paradaNueva.getDato());
-                        return;
-                    default:
-                        System.out.println("Opción inválida");
-                        return;
-
-                }
-            }else {
-
-                NodoDoble paradaActual = inicio;
-
-                while (!datoParadaAnterior.equals(paradaActual.getDato())) { //se recorre la Lista
-                    System.out.println("Estoy en: " + paradaActual.getDato());
-                    paradaActual = paradaActual.getSiguiente();
-                }
-
-                //Se reasignan valores
-                paradaNueva.setSiguiente(paradaActual.getSiguiente());
-                paradaNueva.setAnterior(paradaActual);
-
-                if (paradaActual.getSiguiente() != null) {
-                    paradaActual.getSiguiente().setAnterior(paradaNueva);
-                }
-
-                paradaActual.setSiguiente(paradaNueva);
-
-                if (paradaActual == ultimo) {
-                    ultimo = paradaNueva;
-                }
+            if(buscar(referencia.getDato().toString()) != null){ //si el elemento está en la lista
+                System.out.println("ESTOY EN CASO MAS DE UN ELEMENTO");
+                menuParadas(nuevaParada, referencia);
+            }else{
+                System.out.println("[!] La parada no existe");
             }
-        }else {
-            System.out.println("[!] Ingrese una parada que exista.");
-            return;
+
         }
     }
 
-    public void eliminarParada(){
-        int opcion;
-        do{
-            System.out.println("\n\t[3] Eliminar Parada");
-            System.out.println("=================================================================");
-            System.out.println("[1] Eliminar primera parada");
-            System.out.println("[2] Eliminar última parada");
-            System.out.println("[3] Otra");
-            System.out.println("[4] Volver");
-            System.out.println("Seleccione una opción: ");
-            opcion = leerOpcion();
-            switch (opcion){
-                case 1:
-                    System.out.println("[1] Eliminar primera parada");
-                    System.out.println("[!] Eliminando primera parada...");
-                    eliminaInicio();
-                    imprimir();
-                    break;
-                case 2:
-                    System.out.println("[1] Eliminar última parada");
-                    System.out.println("[!] Eliminando última parada...");
-                    eliminaFinal();
-                    imprimir();
-                    break;
-                case 3:
-                    System.out.println("[3] Otra");
-                    System.out.println("[!] Introduzca el nombre de la parada que desea eliminar:");
-                    System.out.println("[!] Presione Enter...");
-                    scanner.nextLine();
-                    String nombreParadaAEliminar = scanner.nextLine();
+    public void verRecorrido(){
+         recorrido.imprimir();
+    }
 
-                    eliminaOtra(nombreParadaAEliminar);
-                    imprimir();
-                    break;
+    public void menuParadas(NodoDoble nuevaParada, NodoDoble paradaBuscada){
+        System.out.println("[1] Agregar nueva parada antes de " + paradaBuscada.getDato());
+        System.out.println("[2] Agregar nueva parada después de " + paradaBuscada.getDato());
+        int op;
+        op = leerOpcion();
+
+        NodoDoble referencia = buscar(paradaBuscada.getDato().toString());
+
+        System.out.println(referencia); //referencia llega como null
+        switch (op){
+            case 1:
+                agregarAntes(referencia, nuevaParada);
+                break;
+            case 2:
+                agregarDespues(referencia, nuevaParada);
+                break;
+            default:
+                System.out.println("[!] Opción inválida");
+        }
+    }
+
+    public void agregarAntes(NodoDoble referencia, NodoDoble nueva){
+
+        System.out.println("");
+            if(referencia != null){ //si la referencia existe
+
+
+               nueva.setAnterior(referencia.getAnterior());
+               nueva.setSiguiente(referencia);
+               referencia.setAnterior(nueva);
+               if(referencia.getAnterior() != null){ //si hay algo antes de la referencia
+                   referencia.getAnterior().setSiguiente(nueva); //actualizamos el anterior de la referencia
+               }else{ //si la referencia era el primer nodo, SE DEBE ACTUALIZAR INICIO
+                   recorrido.setInicio(nueva);
+                   System.out.println("RECORRIDO SET INICIO" + recorrido.getInicio().getDato());
+                   System.out.println("Inicio real: " + recorrido.getInicio().getDato());
+                   System.out.println("Inicio.siguiente: " + recorrido.getInicio().getSiguiente().getDato());
+                   System.out.println("IMPRIMIENDO RECORRIDO");
+                   recorrido.imprimir();
+
+               }
+
+                recorrido.imprimir();
             }
-        }while(opcion != 4);
-
     }
 
-    public boolean paradaExiste(String dato){
-         NodoDoble nodoActual = inicio;
-         //recorrer arreglo
-        //si la lista está vacía
-        if(nodoActual == null){
-            System.out.println("[!] La lista está vacía");
-            return false;
-        }
-        while(nodoActual!= null){
-            //comparamos
-            if(dato.equals(nodoActual.getDato())){
-                System.out.println("[!] La parada sí existe");
-                return true;
+    public void agregarDespues(NodoDoble referencia, NodoDoble nueva){
+        if(referencia != null){ //si la referencia existe
+            nueva.setSiguiente(referencia.getSiguiente());
+            nueva.setAnterior(referencia);
+            if(referencia.getSiguiente() != null){
+                referencia.getSiguiente().setAnterior(nueva);
+            }else{//si referencia era el último, se actualiza ULTIMO
+                recorrido.setUltimo(nueva);
             }
-            //cambiamos de nodo
-            nodoActual = nodoActual.getSiguiente();
-        }
-        System.out.println("[!] La parada no existe");
-        return false;
-    }
-
-    public void eliminaOtra(String datoAEliminar){
-
-        if(inicio == null){
-            System.out.println("[!] Lista vacía...");
-            return;
-        }
-         NodoDoble paradaActual = inicio; //Auxiliar
-         //recorrer nodo
-        if(paradaExiste(datoAEliminar)){
-
-            //Recorremos lista
-            while(!datoAEliminar.equals(paradaActual.getDato())){
-                paradaActual = paradaActual.getSiguiente();
-            } //parada Actual es el nodo que quiero eliminar
-
-            //actualizamos
-            paradaActual.getAnterior().setSiguiente(paradaActual.getSiguiente());
-            paradaActual.getSiguiente().setAnterior(paradaActual.getAnterior());
-
-        }else{
-            System.out.println("[!] El dato no existe...");
+            referencia.setSiguiente(nueva);
         }
     }
 
-    public void recorrerParadas() {
 
-        if (inicio == null) {
+
+    public NodoDoble buscar(String paradaBuscada){
+        //Buscará el dato dentro del recorrido y devolverá el nodo que busco, con sus apuntadores
+        //Nodo auxiliar
+
+        NodoDoble nodoAuxiliar = (NodoDoble) recorrido.getInicio();
+        while(nodoAuxiliar != null){
+            if(paradaBuscada.equals(nodoAuxiliar.getDato())){ //si se cumple la igualdad, entonces devolvemos el nodo
+                return nodoAuxiliar;
+            }
+            nodoAuxiliar = nodoAuxiliar.getSiguiente();
+        }
+        return null;
+    }
+
+
+    public void menuEliminarParada(){
+
+        System.out.println("[1] Eliminar primera parada");
+        System.out.println("[2] Eliminar última parada");
+        System.out.println("[3] Eliminar por nombre");
+
+        int op = leerOpcion();
+
+        switch(op){
+
+            case 1:
+                eliminarParadaPorNombre(
+                        recorrido.getInicio().getDato().toString()
+                );
+                break;
+
+            case 2:
+                eliminarParadaPorNombre(
+                        recorrido.getUltimo().getDato().toString()
+                );
+                break;
+
+            case 3:
+                System.out.println("Ingrese parada a eliminar:");
+                eliminarParadaPorNombre(leerDato());
+                break;
+
+            default:
+                System.out.println("[!] Opción inválida");
+        }
+    }
+
+    public void eliminarParadaPorNombre(String nombre){
+
+        if(recorrido.vacio()){
             System.out.println("[!] No hay paradas en la ruta.");
             return;
         }
 
-        NodoDoble actual = inicio;
-        int opcion;
+        NodoDoble nodoEliminar = buscar(nombre);
 
-        do {
-            System.out.println("\n=== Navegación de Paradas ===");
-            System.out.println("Parada actual: " + actual.getDato());
-            System.out.println("[1] Ir a la siguiente parada");
-            System.out.println("[2] Ir a la parada anterior");
-            System.out.println("[3] Salir");
-            System.out.print("Seleccione opción: ");
+        if(nodoEliminar == null){
+            System.out.println("[!] La parada no existe.");
+            return;
+        }
 
-            opcion = leerOpcion();
+        if(recorrido.getInicio() == recorrido.getUltimo()){
+            recorrido.setInicio(null);
+            recorrido.setUltimo(null);
+        }
 
-            switch (opcion) {
+        else if(nodoEliminar == recorrido.getInicio()){
+            recorrido.setInicio(nodoEliminar.getSiguiente());
+            ((NodoDoble) recorrido.getInicio()).setAnterior(null); //se debe castear para tener la funcion setAnterior
+        }
 
-                case 1:
-                    if (actual.getSiguiente() != null) {
-                        actual = actual.getSiguiente();
-                    } else {
-                        System.out.println("[!] Ya estás en la última parada.");
-                    }
-                    break;
+        else if(nodoEliminar == recorrido.getUltimo()){
+            recorrido.setUltimo(nodoEliminar.getAnterior());
+            recorrido.getUltimo().setSiguiente(null);
+        }
 
-                case 2:
-                    if (actual.getAnterior() != null) {
-                        actual = actual.getAnterior();
-                    } else {
-                        System.out.println("[!] Ya estás en la primera parada.");
-                    }
-                    break;
+        else{
+            nodoEliminar.getAnterior().setSiguiente(nodoEliminar.getSiguiente());
+            nodoEliminar.getSiguiente().setAnterior(nodoEliminar.getAnterior());
+        }
 
-                case 3:
-                    System.out.println("[!] Saliendo de la navegación...");
-                    break;
-
-                default:
-                    System.out.println("[!] Opción inválida.");
-            }
-
-        } while (opcion != 3);
+        System.out.println("[!] Parada eliminada correctamente.");
     }
-
 
 
     private int leerOpcion(){
         int opcion;
         try {
             opcion = scanner.nextInt();
+            System.out.println("[!] Presione enter...");
+            scanner.nextLine(); //limpiar buffer
             return opcion;
         } catch (InputMismatchException e) {
+            scanner.nextLine();
             opcion = -1;
         }
         return opcion;
     }
 
+    private String leerDato(){
+        String dato;
 
-    public String getNombreRuta() {
-        return nombreRuta;
+        do{
+            dato = scanner.nextLine().trim();
+            if(dato.isEmpty()){
+                System.out.println("[!] No puedes dejar el campo vacío. Intenta otra vez:");
+            }
+
+        }while(dato.isEmpty());
+
+        return dato;
     }
 
-    public void setNombreRuta(String nombreRuta) {
-        this.nombreRuta = nombreRuta;
+    public void imprimir(){
+        NodoDoble nodoAuxiliar = (NodoDoble) recorrido.getInicio();
+        while(nodoAuxiliar != null){
+            System.out.println(nodoAuxiliar.getDato() + "->");
+            nodoAuxiliar = nodoAuxiliar.getSiguiente();
+        }
     }
+
 
     //OVERRIDE FUNCTIONS
     public static void main(String[] args) {
         Rutas ruta = new Rutas();
         Scanner scanner1 = new Scanner(System.in);
-
-        ruta.agregarParadaAlFinal();
         ruta.agregarParadaAlFinal();
         ruta.agregarParadaAlFinal();
 
         ruta.agregarParadaEntreRutas();
-        ruta.eliminarParada();
-        ruta.recorrerParadas();
         ruta.imprimir();
+
+        ruta.menuEliminarParada();
+        ruta.imprimir();
+
     }
 
 }
