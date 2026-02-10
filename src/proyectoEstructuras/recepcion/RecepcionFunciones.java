@@ -79,6 +79,7 @@ public class RecepcionFunciones implements Queue {
         return size;
     }
 
+    // Main para pruebas
     public static void main(String[] args) {
         RecepcionFunciones q = new RecepcionFunciones();
         q.enqueue(1);
